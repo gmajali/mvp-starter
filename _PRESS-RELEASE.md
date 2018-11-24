@@ -17,28 +17,28 @@ Once the project moves into development, the press release can be used as a touc
  -->
  
 ## Heading ##
-  > Name the product in a way the reader (i.e. your target customers) will understand.
+  > Cryptocurrency price data
 
 ## Sub-Heading ##
-  > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
+  > The product will show the price of cryptocurrencies in different currencies such as USD, JOD.
 
 ## Summary ##
-  > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
+  > The product will show the price changes in cryptocurrencies in different standard currencies.
 
 ## Problem ##
-  > Describe the problem your product solves.
+  > The product will solve the issue of knowing how much a cryptocurrency is worth in local currency.
 
 ## Solution ##
-  > Describe how your product elegantly solves the problem.
+  > It gets pricing data of cryptocurrencies live by using an API then manipulates that data to show the price in local currency.
 
 ## Quote from You ##
-  > A quote from a spokesperson in your company.
+  > Cryptocurrencies will change the way people use money all around the world.
 
 ## How to Get Started ##
   > Describe how easy it is to get started.
 
 ## Customer Quote ##
-  > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
+  > Using this product helped me see how cryptocurrencies prices change on daily basis, also pointed me to places where I can purchase such currencies.
 
 ## Closing and Call to Action ##
-  > Wrap it up and give pointers where the reader should go next.
+  > Go ahead to the index file to see the product running.

@@ -11,21 +11,39 @@ db.once('open', function() {
   console.log('mongoose connected successfully');
 });
 
-var itemSchema = mongoose.Schema({
-  quantity: Number,
-  description: String
+var cryptoSchema = mongoose.Schema({
+  name: String,
+  price: Number
 });
 
-var Item = mongoose.model('Item', itemSchema);
+var Crypto = mongoose.model('Crypto', cryptoSchema);
+
+// save to database function
+let save = (data) => {
+  // TODO: Your code here
+  // This function should save a repo or repos to
+  // the MongoDB
+  let cryptos = new Crypto(data);
+  console.log('dataowner', data);
+
+  cryptos.save(function (err, res) {
+    if (err) {
+      console.log("error");
+    }
+      console.log('Saved!');
+  })
+}
 
 var selectAll = function(callback) {
-  Item.find({}, function(err, items) {
+  Crypto.find({}, function(err, cryptos) {
     if(err) {
       callback(err, null);
     } else {
-      callback(null, items);
+      callback(null, cryptos);
     }
   });
 };
 
+module.exports.save = save;
+module.exports.Crypto = Crypto;
 module.exports.selectAll = selectAll;
