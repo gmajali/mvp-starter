@@ -46,7 +46,6 @@ class App extends React.Component {
         <div id='crypto-cointainer'>
           <span className="left">{key}</span>
           <span className="right"><NumberFormat value ={this.state.cryptos[key].USD} displayType={'text'} thousandSeparator={true} prefix={'$'} /></span>
-          <button onClick={}>Convert to JOD</button>
           </div>
       ))}
     </div>
