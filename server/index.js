@@ -109,20 +109,7 @@ router.get('/ltc', function(req, res, next) {
 
 
 
-router.get('/getAll', function(req, res, next) {
-  db.getAll((err, result) => {
-    if(err){
-      return res.json({
-        code: -99,
-        error: err
-      });
-    }
-    return res.json({
-      code: 0,
-      result: result
-    });
-  });
-});
+
 
 router.get('/getSpecificCurrency', function(req, res, next) {
   var currencyName = req.query.currencyName;
@@ -139,6 +126,25 @@ router.get('/getSpecificCurrency', function(req, res, next) {
     res.send(response);
   });
 });
+
+router.post('/prices', function (req, res) {
+  cryptos.selectAll(function(err, data) {
+    if(err) {
+      res.sendStatus(500);
+    } else {
+      res.json(data);
+    }
+  });
+});
+
+app.use(router);
+
+var port = process.env.PORT || 3000;
+
+app.listen(port, function() {
+  console.log('listening on port 3000!');
+});
+
 
 // cc.price('ETH', ['USD'])
 //     .then(prices => {
@@ -189,21 +195,17 @@ router.get('/getSpecificCurrency', function(req, res, next) {
   
 // })
 
-router.post('/prices', function (req, res) {
-  cryptos.selectAll(function(err, data) {
-    if(err) {
-      res.sendStatus(500);
-    } else {
-      res.json(data);
-    }
-  });
-});
-
-app.use(router);
-
-var port = process.env.PORT || 3000;
-
-app.listen(port, function() {
-  console.log('listening on port 3000!');
-});
-
+// router.get('/getAll', function(req, res, next) {
+//   db.getAll((err, result) => {
+//     if(err){
+//       return res.json({
+//         code: -99,
+//         error: err
+//       });
+//     }
+//     return res.json({
+//       code: 0,
+//       result: result
+//     });
+//   });
+// });
