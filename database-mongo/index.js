@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
+mongoose.connect('mongodb://ghazi:ghazi123@ds249372.mlab.com:49372/cryptobase');
 
 var db = mongoose.connection;
 
@@ -12,26 +12,74 @@ db.once('open', function() {
 });
 
 var cryptoSchema = mongoose.Schema({
-  name: String,
+  cryptoCurrency: String,
+  actualCurrency: String,
   price: Number
 });
 
 var Crypto = mongoose.model('Crypto', cryptoSchema);
 
-// save to database function
-let save = (data) => {
-  // TODO: Your code here
-  // This function should save a repo or repos to
-  // the MongoDB
-  let cryptos = new Crypto(data);
-  console.log('dataowner', data);
-
-  cryptos.save(function (err, res) {
-    if (err) {
-      console.log("error");
+//Helper functions
+let getAll = (cb) => {
+  Crypto.find({}, (err, result) => {
+    if(err){
+      return cb(err, null);
+    }else{
+      return cb(null, result);
     }
-      console.log('Saved!');
+  });
+}
+
+let getSpecificCurrency = (currencyName, cb) => {
+  Crypto.find({cryptoCurrency: currencyName}, (err, result) => {
+    if(err){
+      return cb(err, null);
+    }else{
+      return cb(null, result);
+    }
   })
+}
+
+// save to database function
+let save = (data, cb) => {
+
+  // This function should save to
+  // the MongoDB
+
+  console.log('dataowner', data);
+  data.forEach(ct => {
+    let cryptos = new Crypto(ct);
+    cryptos.save(function (err, res) {
+        if (err) {
+          console.log(`error = ${err}`);
+          cb(err, null);
+        } else {
+          console.log('Saved!');
+          res.JOD = res.price * 0.7;
+          cb(null, res);
+          }
+      });
+  });
+
+  // working approach insert as array
+  // Crypto.insertMany(data, (err, res) =>{
+  //   if (err) {
+  //     console.log(`error = ${err}`);
+  //     cb(err, null);
+  //   } else {
+  //     console.log('Saved!');
+  //     cb(null, res);
+  //     }
+  // });
+  // cryptos.save(function (err, res) {
+  //   if (err) {
+  //     console.log(`error = ${err}`);
+  //     cb(err, null);
+  //   } else {
+  //     console.log('Saved!');
+  //     cb(null, res);
+  //     }
+  // })
 }
 
 var selectAll = function(callback) {
@@ -43,7 +91,8 @@ var selectAll = function(callback) {
     }
   });
 };
-
+module.exports.getSpecificCurrency = getSpecificCurrency;
+module.exports.getAll = getAll;
 module.exports.save = save;
 module.exports.Crypto = Crypto;
 module.exports.selectAll = selectAll;
