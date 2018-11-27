@@ -15,7 +15,9 @@ class App extends React.Component {
       cryptosETH: [],
       cryptosLTC: [],
       upDown: ["https://static.thenounproject.com/png/1195138-200.png", "https://static.thenounproject.com/png/1195134-200.png"],
-      arrow: ''
+      arrow: '',
+      arrowETH: '',
+      arrowLTC: ''
     }
   }
 
@@ -24,6 +26,10 @@ class App extends React.Component {
   componentDidMount() {
     var oldVal = 0;
     var percentage = 0;
+    var oldValETH = 0;
+    var percentageETH = 0;
+    var oldValLTC = 0;
+    var percentageLTC = 0;
     setInterval(() => {
       axios.get('/getSpecificCurrency?currencyName=BTC').then(res => {
         // console.log(res.data.result);
@@ -44,17 +50,21 @@ class App extends React.Component {
       });
     }, 5000);
 
-    // axios.get('https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC,ETH,LTC&tsyms=USD')
-    // .then(res => {
-    //   const cryptos = res.data;
-    //   console.log(cryptos);
-    //   // this.setState({cryptos: cryptos});
-    //   axios.post('/prices').then(res);
-
     setInterval(() => {
       axios.get('/getSpecificCurrency?currencyName=ETH').then(res => {
         // console.log(res.data.result);
         this.setState({cryptosETH: res.data.splice(res.data.length -1)});
+
+        percentageETH = res.data[res.data.length - 1].price / oldValETH;
+        if(percentageETH >= 1){
+          console.log('show greater image');
+          this.setState({arrowETH: this.state.upDown[0]});
+        } else {
+          console.log('show smaller image')
+          this.setState({arrowETH: this.state.upDown[1]});
+        }
+        
+        oldValETH = res.data[res.data.length - 1].price;
       });
     }, 5000);
       
@@ -62,6 +72,17 @@ class App extends React.Component {
       axios.get('/getSpecificCurrency?currencyName=LTC').then(res => {
         // console.log(res.data.result);
         this.setState({cryptosLTC: res.data.splice(res.data.length -1)});
+
+        percentageLTC = res.data[res.data.length - 1].price / oldValLTC;
+        if(percentageLTC >= 1){
+          console.log('show greater image');
+          this.setState({arrowLTC: this.state.upDown[0]});
+        } else {
+          console.log('show smaller image')
+          this.setState({arrowLTC: this.state.upDown[1]});
+        }
+        
+        oldValLTC = res.data[res.data.length - 1].price;
       });
     }, 5000);
   }
@@ -92,6 +113,7 @@ class App extends React.Component {
           <br></br>
           <span className="right"><NumberFormat value ={this.state.cryptosETH[key].jod.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'JOD'} /></span>
           <br></br>
+          <img src={this.state.arrowETH}></img>
           </div>
       ))}
       {Object.keys(this.state.cryptosLTC).map((key) => (
@@ -103,6 +125,7 @@ class App extends React.Component {
           <br></br>
           <span className="right"><NumberFormat value ={this.state.cryptosLTC[key].jod.toFixed(2)} displayType={'text'} thousandSeparator={true} prefix={'JOD'} /></span>
           <br></br>
+          <img src={this.state.arrowLTC}></img>
           </div>
       ))}
       <p><a href="https://localbitcoins.com/country/JO">Click here</a> to buy Bitcoin in Jordan.</p>
@@ -114,3 +137,11 @@ class App extends React.Component {
 }
 
 ReactDOM.render(<App />, document.getElementById('app'));
+
+
+    // axios.get('https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC,ETH,LTC&tsyms=USD')
+    // .then(res => {
+    //   const cryptos = res.data;
+    //   console.log(cryptos);
+    //   // this.setState({cryptos: cryptos});
+    //   axios.post('/prices').then(res);
